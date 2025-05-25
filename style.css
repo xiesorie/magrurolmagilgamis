@@ -10,3 +10,8 @@ body {
 .updatetext {
     font-family: 'Times New Roman', Times, serif;
 }
+
+#options label {
+  display: block;
+  margin-bottom: 8px; /* aralarda biraz boşluk için */
+}

@@ -1,8 +1,3 @@
-document.getElementById("quiz").innerHTML = "<p>Test başarılı</p>";
-
-document.addEventListener("DOMContentLoaded", function() {
-
-
 const allQuestions = [
     
   {
@@ -1093,110 +1088,12 @@ const allQuestions = [
 
 ];
 
-const questions = rawQuestions.map(item => ({
-  question: item.Question,
-  options: {
-    a: item["Option a"],
-    b: item["Option b"],
-    c: item["Option c"],
-    d: item["Option d"],
-    e: item["Option e"]
-  },
-  answer: item.Answer
+const harfler = ["A", "B", "C", "D", "E"];
+
+const sorular = sorularExcelden.map(item => ({
+  q: item["Soru"],
+  options: harfler.map(harf => `${harf}) ${item[harf]}`),
+  answer: harfler.indexOf(item["Cevap"].toUpperCase())
 }));
 
-
-function shuffle(array) {
-  let currentIndex = array.length, randomIndex;
-
-  while (currentIndex != 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // Yer değiştir
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-  }
-  return array;
-}
-
-let selectedQuestions = shuffle([...questions]).slice(0, 20); // 20 tane rastgele seç
-
-let currentQuestionIndex = 0;
-let userAnswers = [];
-
-// HTML elemanlarını seçelim
-const quizContainer = document.getElementById("quiz");
-const nextBtn = document.getElementById("next");
-const resultContainer = document.getElementById("result");
-
-// İlk soruyu göster
-function showQuestion() {
-  const q = selectedQuestions[currentQuestionIndex];
-  let optionsHTML = "";
-  for (const [key, text] of Object.entries(q.options)) {
-    optionsHTML += `
-      <label>
-        <input type="radio" name="answer" value="${key}" />
-        ${key}) ${text}
-      </label><br/>
-    `;
-  }
-  quizContainer.innerHTML = `
-    <div>
-      <h3>Soru ${currentQuestionIndex + 1} / 20</h3>
-      <p>${q.question}</p>
-      <form id="quiz-form">${optionsHTML}</form>
-    </div>
-  `;
-
-  // Next butonuna basılana kadar result gizli olsun
-  resultContainer.innerHTML = "";
-}
-
-showQuestion();
-
-// Sonraki soruya geç
-nextBtn.addEventListener("click", () => {
-  const selectedOption = document.querySelector('input[name="answer"]:checked');
-  if (!selectedOption) {
-    alert("Lütfen bir şık seçin.");
-    return;
-  }
-  userAnswers[currentQuestionIndex] = selectedOption.value;
-
-  currentQuestionIndex++;
-
-  if (currentQuestionIndex < selectedQuestions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
-});
-
-// Sonuçları göster
-function showResult() {
-  let correctCount = 0;
-  let resultHTML = "<h2>Sonuçlar</h2>";
-
-  selectedQuestions.forEach((q, i) => {
-    const userAnswer = userAnswers[i];
-    const isCorrect = userAnswer === q.answer;
-    if (isCorrect) correctCount++;
-
-    resultHTML += `
-      <div style="margin-bottom: 15px;">
-        <strong>Soru ${i + 1}:</strong> ${q.question}<br/>
-        <span style="color: ${isCorrect ? "green" : "red"}">
-          Senin cevabın: ${userAnswer}) ${q.options[userAnswer]}
-        </span><br/>
-        ${!isCorrect ? `<span style="color: blue;">Doğru cevap: ${q.answer}) ${q.options[q.answer]}</span>` : ""}
-      </div>
-    `;
-  });
-
-  resultHTML += `<h3>Doğru sayısı: ${correctCount} / 20</h3>`;
-  quizContainer.innerHTML = "";
-  resultContainer.innerHTML = resultHTML;
-}
-
-});
+console.log(JSON.stringify(sorular, null, 2));
