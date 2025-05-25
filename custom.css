@@ -1,4 +1,8 @@
 #options label {
   display: block;
-  margin-bottom: 8px; /* aralarda biraz boşluk için */
+  margin-bottom: 8px;
+}
+
+body {
+    background-color: beige;
 }
